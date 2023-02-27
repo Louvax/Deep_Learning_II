@@ -53,6 +53,12 @@ class RBM:
             X_rec = self.sortie_entree_RBM(H)
             print(np.sum(X - X_rec) ** 2 / X_copy.shape[0])
 
-    def generate_data(nb_data, nb_gibbs):
+    def generate_data(self, nb_data, nb_gibbs):
+        data = []
         for i in range(nb_data):
-            pass
+            v = (np.random(len(self.a)) < 1 / 2) * 1
+            for iter in range(nb_gibbs):
+                h = (np.random(len(self.b)) < self.entree_sortie_RBM(v)) * 1
+                v = (np.random(len(self.a)) < self.sortie_entree_RBM(h)) * 1
+            data.append(v)
+        return np.array(data)
