@@ -14,11 +14,11 @@ class DBN:
         for i in range(len(config) - 1):
             self.Dbn.append(RBM(config[i], config[i + 1]))
 
-    def train_DBN(self, X, eps, batch_size, epochs):
+    def train_DBN(self, X, batch_size, epochs, lr):
         for epoch in range(epochs):
             X_copy = X.copy()
             for i in range(len(self.Dbn)):
-                self.Dbn[i].train_RBM(X_copy, 1, batch_size, eps)
+                self.Dbn[i].train_RBM(X_copy, 1, batch_size, lr)
                 X_copy = self.Dbn[i].entree_sortie_RBM(X_copy)
 
     def generate_image_DBN(self, nb_data, nb_gibbs):
