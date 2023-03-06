@@ -37,9 +37,9 @@ class RBM:
                 tb = len(X_batch)
                 v0 = X_batch
                 Ph_v0 = self.entree_sortie_RBM(v0)
-                h0 = (np.random(tb * q) < Ph_v0) * 1
+                h0 = (np.random.rand(tb, q) < Ph_v0) * 1
                 Pv_h0 = self.sortie_entree_RBM(h0)
-                v1 = (np.random(tb * p) < Pv_h0) * 1
+                v1 = (np.random.rand(tb, p) < Pv_h0) * 1
                 Ph_v1 = self.entree_sortie_RBM(v1)
 
                 grad_a = np.sum(v0 - v1, axis=0)
@@ -56,9 +56,9 @@ class RBM:
     def generate_data(self, nb_data, nb_gibbs):
         data = []
         for i in range(nb_data):
-            v = (np.random(len(self.a)) < 1 / 2) * 1
+            v = (np.random.rand(len(self.a)) < 1 / 2) * 1
             for iter in range(nb_gibbs):
-                h = (np.random(len(self.b)) < self.entree_sortie_RBM(v)) * 1
-                v = (np.random(len(self.a)) < self.sortie_entree_RBM(h)) * 1
+                h = (np.random.rand(len(self.b)) < self.entree_sortie_RBM(v)) * 1
+                v = (np.random.rand(len(self.a)) < self.sortie_entree_RBM(h)) * 1
             data.append(v)
         return np.array(data)
