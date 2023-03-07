@@ -29,4 +29,13 @@ class DNN:
 
         return output
     
-    
+    def retropropagation(self, X, y, epochs, batch_size, lr):
+        for epoch in range(epochs):
+            X_copy = X.copy()
+            np.random.shuffle(X_copy)
+            for batch in range(0, len(X_copy), batch_size):
+                X_batch = X_copy[batch:min(batch+batch_size, len(X_copy))]
+                tb = len(X_batch)
+
+                
+
