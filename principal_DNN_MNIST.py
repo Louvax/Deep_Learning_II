@@ -64,9 +64,9 @@ class DNN:
                         data = z[layer - 1]
 
                     dz2 = z[layer] * (1 - z[layer])
-                    dz1 = (dz2 @ self.DBN.Dbn[layer+1].W.T)*dz2
+                    dz1 = (dz2 @ self.DBN.Dbn[layer + 1].W.T) * dz2
 
-                    grad_w = z[layer-1].T @ dz1 / tb
+                    grad_w = z[layer - 1].T @ dz1 / tb
                     grad_b = np.sum(dz1) / tb
 
                     self.DBN.Dbn[layer].W -= lr * grad_w
@@ -74,8 +74,23 @@ class DNN:
 
                 z = self.entree_sortie_reseau(X_batch)
 
-            crossentropy = -np.mean(np.log10(z)[y_batch==1])
+            crossentropy = -np.mean(np.log10(z)[y_batch == 1])
 
-            print(f'Epoch : {epoch}, Loss : {crossentropy}')
-            
+            print(f"Epoch : {epoch}, Loss : {crossentropy}")
 
+    def test_DNN(self, X, y):
+        y_pred = self.entree_sortie_reseau(X)[-1]
+
+        crossentropy = -np.mean(np.log10(y_pred)[y == 1])
+
+        for y_i in y_pred:
+            predicted = np.zeros(len(y_i))
+            predicted[np.argmax(y_i)] = 1
+
+            y_i = predicted
+
+        accuracy = (y_pred == y) / len(y) * 100
+
+        print(f"Accuracy : {accuracy}, CrossEntropy : {crossentropy}")
+
+        return accuracy / 100
